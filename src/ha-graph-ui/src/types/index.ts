@@ -1,34 +1,53 @@
 // Resource Types
 export type ResourceType = 'electric' | 'water' | 'gas' | 'stock';
 
+/** What roles a node can play — any combination is valid */
+export interface NodeCapabilities {
+  canProduce: boolean;
+  canConsume: boolean;
+  canStore: boolean;
+}
+
 export interface InventoryItem {
   id: string;
   name: string;
   quantity: number;
   unit: string;
-  targetQuantity?: number; // Defines physical goal thresholds
-  entityId?: string; // Links this specific item to a Home Assistant entity natively
+  targetQuantity?: number;
+  entityId?: string;
   entityType?: 'counter' | 'input_number' | 'sensor';
-  cost?: number; // Used during shopping receipt checkouts
+  cost?: number;
 }
 
-export interface BaseNodeData {
-  id: string;
+/** Data shape for the unified ResourceNode */
+export interface ResourceNodeData {
   label: string;
   resourceType: ResourceType;
-  value: number; // e.g., current power draw, amount in stock
-  unit: string;  // e.g., 'W', 'kWh', 'Gal', 'kg', 'units'
-  maxCapacity?: number; // Allows calculating time to fill/empty
-  capacityUnit?: string; // Physical unit for max capacity e.g. Ah, Wh, kWh
-  costPerUnit?: number; // Optional tariff rate
-  entities?: string[]; // HA entity IDs
-  nestedHubId?: string; // Allows clicking the node to navigate deep into a sub-hub
+  capabilities: NodeCapabilities;
+  value: number;
+  unit: string;
+  maxCapacity?: number;
+  capacityUnit?: string;
+  costPerUnit?: number;
+  entities?: string[];
+  nestedHubId?: string;
   actuator?: {
     type: 'switch' | 'valve' | 'button';
     state: boolean;
   };
-  customIcon?: string; // MDI path string if specified
-  inventory?: InventoryItem[]; // Sub-items physically contained inside this component
+  customIcon?: string;
+  inventory?: InventoryItem[];
+}
+
+/** Legacy alias so old node components compile unchanged */
+export interface BaseNodeData extends ResourceNodeData {}
+
+/** Data carried on each edge */
+export interface EdgeData {
+  flowVolume?: number;
+  resourceType?: ResourceType;
+  entities?: string[];
+  label?: string;
 }
 
 export interface Hub {
