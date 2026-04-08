@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Core Colors */
+  --bg-color: #0f1014;
+  --panel-bg: rgba(255, 255, 255, 0.04);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ededed;
+  --text-secondary: #909090;
+  
+  /* Resources and Semantic Colors */
+  --color-electric: #ffc107;
+  --color-electric-glow: rgba(255, 193, 7, 0.2);
+  --color-water: #00bcd4;
+  --color-water-glow: rgba(0, 188, 212, 0.2);
+  --color-stock: #4caf50;
+  --color-stock-glow: rgba(76, 175, 80, 0.2);
+  --color-gas: #ff5722;
+  --color-gas-glow: rgba(255, 87, 34, 0.2);
+  --accent-color: #6366f1; /* purple-ish for UI elements */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Outfit', -apple-system, sans-serif;
+  overflow: hidden; /* App layout will handle scrolling internally if needed */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.glass-card {
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons and Inputs */
+button {
+  cursor: pointer;
+  border: none;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+button.primary {
+  background: var(--accent-color);
+  border-color: transparent;
+  color: white;
+}
+
+button.primary:hover {
+  background: #4f46e5;
+}
+
+/* React Flow Overrides to match theme */
+.react-flow__pane {
+  background-color: var(--bg-color);
+}
+.react-flow__background {
+  opacity: 0.15;
+}
+.react-flow__node {
+  border-radius: 12px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressShrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+.custom-tooltip-container {
+  position: relative;
+  display: inline-flex;
+  cursor: help;
+}
+
+.custom-tooltip-container .custom-tooltip-text {
+  visibility: hidden;
+  width: 220px;
+  background-color: rgba(30, 30, 35, 0.95);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  position: absolute;
+  z-index: 1000;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  line-height: 1.4;
+}
+
+.custom-tooltip-container:hover .custom-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
