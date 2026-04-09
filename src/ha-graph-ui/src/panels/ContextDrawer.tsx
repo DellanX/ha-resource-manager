@@ -105,21 +105,28 @@ export function ContextDrawer({
   const [edgeEntityDraft, setEdgeEntityDraft] = useState('');
   const [edgeEntities,    setEdgeEntities]    = useState<string[]>([]);
 
-  // Reset local state whenever selection changes
+  // ── Effect 1: Reset UI state ONLY when the selected node/edge changes to a different one.
+  //    Data-only updates to the same node (e.g. toggling capabilities) must NOT reset the tab.
   useEffect(() => {
     setActiveTab('live');
     setIsEditingOverride(false);
     setConfigItemId(null);
     setNodeEntityDraft('');
     setEdgeEntityDraft('');
-    if (selectedNode) {
-      setOverrideValue(selectedNode.data.value ?? 0);
-      setNodeEntities(selectedNode.data.entities ?? []);
-    }
-    if (selectedEdge) {
-      setEdgeEntities(selectedEdge.data?.entities ?? []);
-    }
-  }, [selectedNode, selectedEdge]);
+  }, [selectedNode?.id, selectedEdge?.id]); // keyed on IDs, not object references
+
+  // ── Effect 2: Keep local copies of mutable data in sync whenever they change.
+  useEffect(() => {
+    setNodeEntities(selectedNode?.data.entities ?? []);
+  }, [selectedNode?.data.entities]);
+
+  useEffect(() => {
+    setOverrideValue(selectedNode?.data.value ?? 0);
+  }, [selectedNode?.data.value]);
+
+  useEffect(() => {
+    setEdgeEntities(selectedEdge?.data?.entities ?? []);
+  }, [selectedEdge?.data?.entities]);
 
   if (!isOpen) return null;
 
